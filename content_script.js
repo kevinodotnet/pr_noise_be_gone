@@ -17,6 +17,9 @@ function initPolicial(trNode) {
 
     trNode.parentNode.insertBefore(newTr, trNode);
     trNode.style.display = 'none';
+
+    count = parseInt(document.body.getAttribute('data-policial-hidden-count')) + 1;
+    document.body.setAttribute('data-policial-hidden-count', count);
 }
 
 function walkNode(node) {
@@ -35,11 +38,39 @@ function walkNode(node) {
     }
 }
 
+function getReviewToolsDiv() {
+    return document.body.getElementsByClassName('pr-review-tools')[0];
+}
+
+function displayHiddenCount() {
+    if (!getReviewToolsDiv()) {
+        return;
+    }
+    var id = 'data-policial-hidden-count';
+    var hiddenCountDiv = document.getElementById(id);
+    if (!hiddenCountDiv) {
+        hiddenCountDiv = document.createElement('div');
+    }
+    hiddenCountDiv.id = id;
+    hiddenCountDiv.innerHTML = "noises hidden: ";
+    hiddenCountDiv.innerHTML += document.body.getAttribute('data-policial-hidden-count');
+    hiddenCountDiv.classList.add('diffbar-item');
+    hiddenCountDiv.style.background = '#ff0000';
+    hiddenCountDiv.style.color = '#ffffff';
+    hiddenCountDiv.style.padding = '5px';
+    hiddenCountDiv.style.borderRadius = '10px';
+    getReviewToolsDiv().insertBefore(hiddenCountDiv, getReviewToolsDiv().firstChild);
+}
+
+
+document.body.setAttribute('data-policial-hidden-count', '0');
 walkNode(document.body);
+displayHiddenCount();
 
 var observerCallback = function (mutationsList, observer) {
     observer.disconnect();
     walkNode(document.body);
+    displayHiddenCount();
     observer.observe(document.body, {attributes: true, childList: true, subtree: true});
 }
 
