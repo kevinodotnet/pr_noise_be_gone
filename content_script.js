@@ -38,6 +38,24 @@ function walkNode(node) {
     }
 }
 
+function toggleVisible() {
+    var setDisplay;
+    if (document.body.getAttribute('data-policial-hidden-count-visible') == '0') {
+        document.body.setAttribute('data-policial-hidden-count-visible', '1');
+        setDisplay = '';
+    } else {
+        document.body.setAttribute('data-policial-hidden-count-visible', '0');
+        setDisplay = 'none';
+    }
+
+    for (let trNode of document.getElementsByTagName('TR')) {
+        if (! trNode.getAttribute('data-policial-be-gone')) {
+            continue;
+        }
+        trNode.style.display = setDisplay;
+    }
+}
+
 function getReviewToolsDiv() {
     return document.body.getElementsByClassName('pr-review-tools')[0];
 }
@@ -49,7 +67,8 @@ function displayHiddenCount() {
     var id = 'data-policial-hidden-count';
     var hiddenCountDiv = document.getElementById(id);
     if (!hiddenCountDiv) {
-        hiddenCountDiv = document.createElement('div');
+        hiddenCountDiv = document.createElement('button');
+        hiddenCountDiv.addEventListener("click", toggleVisible, false);
     }
     hiddenCountDiv.id = id;
     hiddenCountDiv.innerHTML = "noises hidden: ";
@@ -59,10 +78,11 @@ function displayHiddenCount() {
     hiddenCountDiv.style.color = '#ffffff';
     hiddenCountDiv.style.padding = '5px';
     hiddenCountDiv.style.borderRadius = '10px';
+
     getReviewToolsDiv().insertBefore(hiddenCountDiv, getReviewToolsDiv().firstChild);
 }
 
-
+document.body.setAttribute('data-policial-hidden-count-visible', '0');
 document.body.setAttribute('data-policial-hidden-count', '0');
 walkNode(document.body);
 displayHiddenCount();
