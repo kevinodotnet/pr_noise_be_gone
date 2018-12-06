@@ -1,0 +1,17 @@
+{
+  "name": "PR Noise Be Gone",
+  "version": "0.001",
+  "description": "Hide noise in PR reviews",
+  "manifest_version": 2,
+  "content_scripts": [
+    {
+      "matches": [
+        "https://github.com/*"
+      ],
+      "js": [
+        "content_script.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ]
+}
