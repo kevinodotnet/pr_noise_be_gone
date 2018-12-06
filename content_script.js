@@ -61,6 +61,9 @@ function getReviewToolsDiv() {
 }
 
 function displayHiddenCount() {
+    if (document.body.getAttribute('data-policial-hidden-count') == '0') {
+        return;
+    }
     if (!getReviewToolsDiv()) {
         return;
     }
